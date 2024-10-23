@@ -88,7 +88,21 @@ app.get('/isLoggedIn', authenticate, (req, res) => {
     user
   })
 })
-
+app.get('/posts', authenticate, (req, res) => {
+  const otherPosts = users.flatMap(user => {
+    return user.id !== req.user.id ? user.posts : [];
+  });
+  // console.log("Other posts:", otherPosts); 
+  res.json(otherPosts);
+});
+app.get('/activeUserposts', authenticate, (req, res) => {
+  console.log(req.user.id)
+  const UsersPosts = users.filter(user => {
+    return user.id === req.user.id ? user.posts : [];
+  });
+  // console.log("Other posts:", otherPosts); 
+  res.json(UsersPosts);
+});
 
 
 app.listen(port, () => {
